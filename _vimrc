@@ -1,6 +1,9 @@
-" DOWNLOAD, PUT IN 	vimfiles/color 		https://raw.githubusercontent.com/jpo/vim-railscasts-theme/master/colors/railscasts.vim
 " DOWNLOAD, PUT IN 	vimfiles/autoload 	https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 " SEPERATE WINDOWS BINARIES FOR FZF at https://github.com/junegunn/fzf-bin/releases
+
+"
+" GVIM ON WINDOWS
+"
 if !has('nvim')
 	source $VIMRUNTIME/vimrc_example.vim
 	source $VIMRUNTIME/mswin.vim
@@ -36,54 +39,53 @@ if !has('nvim')
 	  endif
 	endfunction
 endif
-"file directory -> working directory
-set autochdir
 
-"set clipboard windows
-set clipboard=unnamed
 "
-"	"KEYMAPPINGS
+"PLUGINS
 "
-let mapleader = "\<Space>"
 
-"move line down up
-nnoremap <A-j> :m .+1<CR>==
-nnoremap <A-k> :m .-2<CR>==
-inoremap <A-j> <Esc>:m .+1<CR>==gi
-inoremap <A-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
+call plug#begin('$Home/vimfiles/plugged')
+Plug 'rust-lang/rust.vim', { 'for': [ 'rust' ], 'do': 'cargo install rustfmt' }
+Plug 'racer-rust/vim-racer'
+Plug 'jpo/vim-railscasts-theme'
+"Plug 'ludovicchabant/vim-gutentags'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+"Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
-"autocompletion
-function! Tab_Or_Complete()
-  if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
-    return "\<C-N>"
-  else
-    return "\<Tab>"
-  endif
-endfunction
-:inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+" Initialize plugin system
+call plug#end()
 
-"save
-nnoremap <leader>fs :w<CR>
+"
+"CONFIGURE PLUGINS
+"
 
-" buffer
-nnoremap <leader>b :b 
+"deoplete
+let g:deoplete#enable_at_startup = 1
 
-""SPECIFIC
-"Ctrlp
-"nnoremap <leader>p :CtrlP ~/Projects<CR>
-"fzf
-nnoremap <leader>p :Files<CR>
-"vimrc open
-nnoremap <leader>fed :e ~/_vimrc<CR>
+"rustfmt
+let g:rustfmt_autosave = 1
 
-" Start maximized
-au GUIEnter * simalt ~x
+"rusty-tags
+autocmd BufRead *.rs :setlocal tags=./rusty-tags.vi;/
+autocmd BufWritePost *.rs :silent! exec "!rusty-tags vi --quiet --start-dir=" . expand('%:p:h') . "&" | redraw!
 
 "
 "	 SET FONT + UI
 "
+
+
+"Start maximized
+au GUIEnter * simalt ~x
+
 colorscheme railscasts
 set guifont=DejaVu\ Sans\ Mono:h10
 set number
@@ -100,31 +102,58 @@ set guioptions-=L  "remove left-hand scroll bar
 
 set wildmenu
 set wildmode=list,full
-"PLUGINS
-" Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
-call plug#begin('$Home/vimfiles/plugged')
-Plug 'rust-lang/rust.vim', { 'for': [ 'rust' ], 'do': 'cargo install rustfmt' }
-Plug 'racer-rust/vim-racer'
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-let g:deoplete#enable_at_startup = 1
-"Plug 'ctrlpvim/ctrlp.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+"set clipboard windows
+set clipboard=unnamed
 
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-" Initialize plugin system
-call plug#end()
+"
+"	"KEYMAPPINGS
+"
 
-"rustfmt execute on save
-let g:rustfmt_autosave = 1
+let mapleader = "\<Space>"
 
-" auto nerdtree ctrlp does everything i want in filesearch probably already
-" autocmd VimEnter * NERDTree | wincmd p
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"move line down up
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
+"vimrc open
+nnoremap <leader>fed :e ~/_vimrc<CR>
+nnoremap <leader>fs :w<CR>
+
+""SPECIFIC
+"Ctrlp
+"nnoremap <leader>p :CtrlP ~/Projects<CR>
+
+"fzf
+nnoremap <leader>/p :Files<CR>
+nnoremap <leader>/f :FindFunctions<CR>
+nnoremap <leader>/s :FindSymbols<CR>
+nnoremap <leader>/i :FindImpls<CR>
+
+
+"stolen from /github.com/MaikKlein/dotfiles
+command! -bang -nargs=* FindSymbols
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --no-ignore --color=always "(type|enum|struct|trait)[ \t]+([a-zA-Z0-9_]+)" -g "*.rs" | rg '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+command! -bang -nargs=* FindFunctions
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --no-ignore --color=always "fn +([a-zA-Z0-9_]+)" -g "*.rs" | rg '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+command! -bang -nargs=* FindImpls
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading ---no-ignore -color=always "impl([ \t\n]*<[^>]*>)?[ \t]+(([a-zA-Z0-9_:]+)[ \t]*(<[^>]*>)?[ \t]+(for)[ \t]+)?([a-zA-Z0-9_]+)" | rg '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+\ <bang>0)
+
