@@ -60,8 +60,8 @@ endif
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'Shougo/deol.nvim'
 " Initialize plugin system
 call plug#end()
 
@@ -140,7 +140,10 @@ nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gp :Gpush<CR>
+nnoremap <leader>gd :Gdiff<CR>
 
+"shell
+nnoremap <leader>! :Deol -split<cr>
 
 "stolen from /github.com/MaikKlein/dotfiles
 command! -bang -nargs=* FindSymbols
