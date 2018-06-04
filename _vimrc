@@ -57,6 +57,7 @@ else
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
 "Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
@@ -133,6 +134,12 @@ nnoremap <leader>/p :Files<CR>
 nnoremap <leader>/f :FindFunctions<CR>
 nnoremap <leader>/s :FindSymbols<CR>
 nnoremap <leader>/i :FindImpls<CR>
+
+"git
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gp :Gpush<CR>
 
 
 "stolen from /github.com/MaikKlein/dotfiles
