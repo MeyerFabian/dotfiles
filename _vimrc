@@ -1,6 +1,8 @@
 " DOWNLOAD, PUT IN 	vimfiles/autoload 	https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 " SEPERATE WINDOWS BINARIES FOR FZF at https://github.com/junegunn/fzf-bin/releases
 
+set encoding=utf-8
+
 "
 " GVIM ON WINDOWS
 "
@@ -48,36 +50,21 @@ call plug#begin('$Home/vimfiles/plugged')
 Plug 'rust-lang/rust.vim', { 'for': [ 'rust' ], 'do': 'cargo install rustfmt' }
 Plug 'racer-rust/vim-racer'
 Plug 'jpo/vim-railscasts-theme'
-"Plug 'ludovicchabant/vim-gutentags'
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-"Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Shougo/deol.nvim'
+Plug 'Valloric/YouCompleteMe'
 " Initialize plugin system
 call plug#end()
 
-"
-"CONFIGURE PLUGINS
-"
-
 "deoplete
-let g:deoplete#enable_at_startup = 1
+"let g:deoplete#enable_at_startup = 1
 
 "rustfmt
 let g:rustfmt_autosave = 1
 
-"rusty-tags
-autocmd BufRead *.rs :setlocal tags=./rusty-tags.vi;/
-autocmd BufWritePost *.rs :silent! exec "!rusty-tags vi --quiet --start-dir=" . expand('%:p:h') . "&" | redraw!
 
 "
 "	 SET FONT + UI
@@ -110,6 +97,10 @@ set clipboard=unnamed
 "
 "	"KEYMAPPINGS
 "
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+
 
 let mapleader = "\<Space>"
 
