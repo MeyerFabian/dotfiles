@@ -56,12 +56,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Shougo/deol.nvim'
 Plug 'Valloric/YouCompleteMe'
-" Initialize plugin system
 call plug#end()
 
-"deoplete
-"let g:deoplete#enable_at_startup = 1
 
+" Initialize plugin system
 "rustfmt
 let g:rustfmt_autosave = 1
 
@@ -97,10 +95,6 @@ set clipboard=unnamed
 "
 "	"KEYMAPPINGS
 "
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
-
 
 let mapleader = "\<Space>"
 
@@ -111,6 +105,12 @@ inoremap <A-j> <Esc>:m .+1<CR>==gi
 inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
+
+":e in current filedir
+nnoremap <leader>e :e %:h
+
+"tabs
+nnoremap <leader>t :tabnew<CR>
 
 "vimrc open
 nnoremap <leader>fed :e ~/_vimrc<CR>
