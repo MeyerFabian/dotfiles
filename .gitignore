@@ -5,3 +5,4 @@
 !.octaverc
 !capslockEsc.ahk
 !.config\nvim\init.vim
+!compile.bat

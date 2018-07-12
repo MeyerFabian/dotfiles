@@ -56,8 +56,27 @@ Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Shougo/deol.nvim'
 Plug 'Valloric/YouCompleteMe'
+"Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'prabirshrestha/async.vim'
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'prabirshrestha/asyncomplete-lsp.vim'
 call plug#end()
 
+"let g:loaded_youcompleteme = 1
+
+"if executable('cquery')
+"   au User lsp_setup call lsp#register_server({
+"   \ 'name': 'cquery',
+"   \ 'cmd': {server_info->['cquery']},
+"   \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
+"   \ 'initialization_options': { 'cacheDirectory': '../../AppData/Local/Temp/cquery' },
+"   \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
+"   \ })
+"   endif
+"nn <silent> <leader>ld :LspDefinition<cr>
+"nn <silent> <leader>lr :LspReferences<cr>
+"nn <silent> <leader>lf :LspDocumentFormat<cr>
+"nn <f2> :LspRename<cr>
 
 " Initialize plugin system
 "rustfmt
