@@ -155,6 +155,8 @@ nnoremap <leader>gd :Gdiff<CR>
 "shell
 nnoremap <leader>! :Deol -split<cr>
 
+"nerdtree
+nmap <leader>ff :NERDTreeToggle<CR>
 "stolen from /github.com/MaikKlein/dotfiles
 command! -bang -nargs=* FindSymbols
   \ call fzf#vim#grep(
