@@ -4,5 +4,7 @@
 !_vimrc
 !.octaverc
 !capslockEsc.ahk
-!.config\nvim\init.vim
+!.config
+!.config/nvim
+!.config/nvim/init.vim
 !compile.bat
