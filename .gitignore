@@ -8,3 +8,4 @@
 !.config/nvim
 !.config/nvim/init.vim
 !compile.bat
+!clang-format-all.bat

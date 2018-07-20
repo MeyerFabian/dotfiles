@@ -56,12 +56,15 @@ Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Shougo/deol.nvim'
 Plug 'Valloric/YouCompleteMe'
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'Chiel92/vim-autoformat'
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/async.vim'
 "Plug 'prabirshrestha/vim-lsp'
 "Plug 'prabirshrestha/asyncomplete-lsp.vim'
 call plug#end()
 
+" Initialize plugin system
 "let g:loaded_youcompleteme = 1
 
 "if executable('cquery')
@@ -78,10 +81,15 @@ call plug#end()
 "nn <silent> <leader>lf :LspDocumentFormat<cr>
 "nn <f2> :LspRename<cr>
 
-" Initialize plugin system
 "rustfmt
-let g:rustfmt_autosave = 1
+"let g:rustfmt_autosave = 1
 
+" syntax highligting c++
+let g:cpp_class_decl_highlight = 1
+let g:cpp_class_scope_highlight = 1
+
+"clang-format
+au BufWrite * :Autoformat
 
 "
 "	 SET FONT + UI
