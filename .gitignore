@@ -1,11 +1,10 @@
 *
 !.gitignore
-!.spacemacs
 !_vimrc
 !.octaverc
-!capslockEsc.ahk
+!.spacemacs
 !.config
 !.config/nvim
 !.config/nvim/init.vim
-!compile.bat
-!clang-format-all.bat
+!scripts/
+!scripts/*
