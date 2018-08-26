@@ -58,6 +58,9 @@ Plug 'Shougo/deol.nvim'
 Plug 'Valloric/YouCompleteMe'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Chiel92/vim-autoformat'
+Plug 'tikhomirov/vim-glsl'
+Plug 'chaoren/vim-wordmotion'
+Plug 'easymotion/vim-easymotion'
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/async.vim'
 "Plug 'prabirshrestha/vim-lsp'
@@ -145,14 +148,18 @@ nnoremap <leader>tn :tabn<CR>
 nnoremap <leader>tp :tabp<CR>
 
 "vimrc open
-nnoremap <leader>fed :e ~/_vimrc<CR>
-nnoremap <leader>fs :w<CR>
+nnoremap <leader>ed :e ~/_vimrc<CR>
+nnoremap <leader>es :w<CR>
 ":e in current filedir
-nnoremap <leader>fee :e %:h
+nnoremap <leader>ee :e %:h
 ":e fast switch .cpp <->.hpp
-nnoremap <leader>feh :e %:p:r.hpp<CR>
-nnoremap <leader>fec :e %:p:r.cpp<CR>
-
+nnoremap <leader>eh :e %:p:r.hpp<CR>
+nnoremap <leader>ec :e %:p:r.cpp<CR>
+"mksession + load session
+nnoremap <leader>ms :mksession! ~/vimfiles/sessions/temp.vim<CR>
+nnoremap <leader>ml :so ~/vimfiles/sessions/temp.vim<CR>
+nnoremap <leader>mn :mksession! ~/vimfiles/sessions/
+nnoremap <leader>mm :so ~/vimfiles/sessions/
 ""SPECIFIC
 "Ctrlp
 "nnoremap <leader>p :CtrlP ~/Projects<CR>
@@ -172,6 +179,22 @@ nnoremap <leader>gd :Gdiff<CR>
 
 "shell
 nnoremap <leader>! :Deol -split<cr>
+
+"easymotion
+" <Leader>f{char} to move to {char}
+map  <Leader>f <Plug>(easymotion-bd-f)
+nmap <Leader>f <Plug>(easymotion-overwin-f)
+
+" s{char}{char} to move to {char}{char}
+nmap s <Plug>(easymotion-overwin-f2)
+
+" Move to line
+map <Leader>L <Plug>(easymotion-bd-jk)
+nmap <Leader>L <Plug>(easymotion-overwin-line)
+
+" Move to word
+map  <Leader>w <Plug>(easymotion-bd-w)
+nmap <Leader>w <Plug>(easymotion-overwin-w)
 
 "nerdtree
 nmap <leader>ff :NERDTreeToggle<CR>
