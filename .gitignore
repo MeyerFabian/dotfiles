@@ -8,3 +8,5 @@
 !.config/nvim/init.vim
 !scripts/
 !scripts/*
+!vimfiles/
+!vimfiles/ftpplugin/*
