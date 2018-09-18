@@ -9,4 +9,7 @@
 !scripts/
 !scripts/*
 !vimfiles/
+!vimfiles/*
+!vimfiles/ftpplugin/
 !vimfiles/ftpplugin/*
+!.latexmkrc
