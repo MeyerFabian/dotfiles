@@ -246,7 +246,6 @@ command! -bang -nargs=* FindSymbols
 			\   <bang>0 ? fzf#vim#with_preview('up:60%')
 			\           : fzf#vim#with_preview('right:50%:hidden', '?'),
 			\   <bang>0)
-
 command! -bang -nargs=* FindFunctions
 			\ call fzf#vim#grep(
 			\   'rg --column --line-number --no-heading --no-ignore --color=always "fn +([a-zA-Z0-9_]+)" -g "*.rs" | rg '.shellescape(<q-args>), 1,

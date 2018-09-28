@@ -1,5 +1,5 @@
 ﻿Loop {
-	SoundPlay, %Home%\StayHydrated.mp3
+	SoundPlay, %Home%\scripts\ahk\StayHydrated.mp3
 		If (A_Min<30)
 		Input:=A_Hour . "30"
 		Else
