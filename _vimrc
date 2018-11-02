@@ -53,7 +53,7 @@ Plug 'jpo/vim-railscasts-theme'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree'
 Plug 'Shougo/deol.nvim'
 Plug 'Valloric/YouCompleteMe'
 Plug 'octol/vim-cpp-enhanced-highlight'
@@ -64,6 +64,8 @@ Plug 'easymotion/vim-easymotion'
 Plug 'lervag/vimtex'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'wesQ3/vim-windowswap'
+Plug 'tpope/vim-abolish'
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/async.vim'
 "Plug 'prabirshrestha/vim-lsp'
@@ -158,6 +160,9 @@ set clipboard=unnamed
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader = "\<Space>"
 nnoremap gd :YcmCompleter GoToDeclaration<CR>
+let g:windowswap_map_keys = 0 "prevent default bindings
+
+let g:NERDTreeQuitOnOpen=1
 
 "remap cut-> <leader>d, delete -> cut DONT CHANGE ORDER
 nnoremap <leader>d d
@@ -192,7 +197,7 @@ nnoremap <leader>ep :e#<CR>
 nnoremap <leader>eh :e %:p:r.hpp<CR>
 nnoremap <leader>ec :e %:p:r.cpp<CR>
 "nerdtree
-nmap <leader>ef :NERDTreeToggle<CR>
+nmap <leader>ef :call MyNerdToggle()<CR>
 "mksession + load session
 nnoremap <leader>ms :mksession! ~/vimfiles/sessions/temp.vim<CR>
 nnoremap <leader>ml :so ~/vimfiles/sessions/temp.vim<CR>
@@ -234,6 +239,11 @@ nmap <Leader>L <Plug>(easymotion-overwin-line)
 map  <Leader>w <Plug>(easymotion-bd-w)
 nmap <Leader>w <Plug>(easymotion-overwin-w)
 
+"swap windows
+nnoremap <silent> <C-w>w :call WindowSwap#EasyWindowSwap()<CR>
+
+"search/replace of abolish
+nmap <leader>s :%Subvert/
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                  COMMANDS                                  "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -289,3 +299,11 @@ function! g:UltiSnips_Complete()
 	return ""
 endfunction
 
+
+function! g:MyNerdToggle()
+	if &filetype == 'nerdtree'
+		:NERDTreeToggle
+	else
+		:NERDTreeFind
+	endif
+endfunction
