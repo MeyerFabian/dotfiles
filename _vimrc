@@ -66,6 +66,10 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'wesQ3/vim-windowswap'
 Plug 'tpope/vim-abolish'
+Plug 'sukima/vim-tiddlywiki'
+Plug 'vimwiki/vimwiki'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/async.vim'
 "Plug 'prabirshrestha/vim-lsp'
@@ -78,7 +82,6 @@ call plug#end()
 
 " Initialize plugin system
 "let g:loaded_youcompleteme = 1
-
 "if executable('cquery')
 "   au User lsp_setup call lsp#register_server({
 "   \ 'name': 'cquery',
@@ -99,10 +102,11 @@ call plug#end()
 " syntax highligting c++
 let g:cpp_class_decl_highlight = 1
 let g:cpp_class_scope_highlight = 1
-
+"
+" turn off indent
+autocmd FileType vim,tex,wiki,md let b:autoformat_autoindent=0
 "clang-format
 au BufWrite * :Autoformat
-
 "ulti snippets
 au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
@@ -118,18 +122,30 @@ let g:vimtex_view_general_viewer = 'SumatraPDF'
 let g:vimtex_view_general_options
 			\ = '-reuse-instance -forward-search @tex @line @pdf'
 let g:vimtex_view_general_options_latexmk = '-reuse-instance'
-
+let g:vimtex_compiler_latexmk = {
+			\ 'options' : [
+			\   '-pdf',
+			\   '-shell-escape',
+			\   '-verbose',
+			\   '-file-line-error',
+			\   '-synctex=1',
+			\   '-interaction=nonstopmode',
+			\ ],
+			\}
 
 if !exists('g:ycm_semantic_triggers')
 	let g:ycm_semantic_triggers = {}
 endif
 let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
+let g:ycm_filetype_blacklist = {}
 
 let g:tex_flavor = "latex"
 let g:tex_fast = "cmMprs"
 let g:tex_conceal = ""
 let g:tex_fold_enabled = 0
 let g:tex_comment_nospell = 1
+
+let g:vimwiki_list = [{'path':'~/Projects/vimwiki', 'path_html':'~/Projects/vimwiki_html/', 'auto_tags':1}]
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                 FONT + GUI                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -139,6 +155,8 @@ set guifont=DejaVu\ Sans\ Mono:h10
 set number
 set t_Co=256
 set nocompatible
+filetype plugin on
+syntax on
 set modelines=0
 set laststatus=2
 highlight Pmenu guibg=#4f4f4f gui=bold
@@ -185,7 +203,14 @@ nnoremap <leader>tn :tabn<CR>
 nnoremap <leader>tp :tabp<CR>
 nnoremap <leader>tL :tabm+<CR>
 nnoremap <leader>tH :tabm-<CR>
-
+"autoclose"
+inoremap " "<left>
+inoremap ' '<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
 "vimrc open
 nnoremap <leader>ed :e ~/_vimrc<CR>
 nnoremap <leader>es :w<CR>
@@ -193,9 +218,6 @@ nnoremap <leader>es :w<CR>
 nnoremap <leader>ee :e %:h
 "jump back to previous file
 nnoremap <leader>ep :e#<CR>
-":e fast switch .cpp <->.hpp
-nnoremap <leader>eh :e %:p:r.hpp<CR>
-nnoremap <leader>ec :e %:p:r.cpp<CR>
 "nerdtree
 nmap <leader>ef :call MyNerdToggle()<CR>
 "mksession + load session
@@ -209,9 +231,6 @@ nnoremap <leader>mm :so ~/vimfiles/sessions/
 
 "fzf
 nnoremap <leader>/p :Files<CR>
-nnoremap <leader>/f :FindFunctions<CR>
-nnoremap <leader>/s :FindSymbols<CR>
-nnoremap <leader>/i :FindImpls<CR>
 
 "git
 nnoremap <leader>gs :Gstatus<CR>
@@ -223,21 +242,27 @@ nnoremap <leader>gd :Gdiff<CR>
 "shell
 nnoremap <leader>! :Deol -split<cr>
 
+"vimwiki
+nnoremap <leader>wbb :VimwikiRebuildTags!<cr>
+nnoremap <leader>wbg :VimwikiGenerateTags<Space>
+nnoremap <leader>wbh :VimwikiAll2HTML<cr>
+
+
 "easymotion
 " <Leader>f{char} to move to {char}
-map  <Leader>f <Plug>(easymotion-bd-f)
-nmap <Leader>f <Plug>(easymotion-overwin-f)
+map  f <Plug>(easymotion-bd-f)
+nmap f <Plug>(easymotion-overwin-f)
 
 " s{char}{char} to move to {char}{char}
 nmap s <Plug>(easymotion-overwin-f2)
 
 " Move to line
-map <Leader>L <Plug>(easymotion-bd-jk)
-nmap <Leader>L <Plug>(easymotion-overwin-line)
+map L <Plug>(easymotion-bd-jk)
+nmap L <Plug>(easymotion-overwin-line)
 
 " Move to word
-map  <Leader>w <Plug>(easymotion-bd-w)
-nmap <Leader>w <Plug>(easymotion-overwin-w)
+map  w <Plug>(easymotion-bd-w)
+nmap w <Plug>(easymotion-overwin-w)
 
 "swap windows
 nnoremap <silent> <C-w>w :call WindowSwap#EasyWindowSwap()<CR>
@@ -247,28 +272,6 @@ nmap <leader>s :%Subvert/
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                  COMMANDS                                  "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-
-"stolen from /github.com/MaikKlein/dotfiles
-command! -bang -nargs=* FindSymbols
-			\ call fzf#vim#grep(
-			\   'rg --column --line-number --no-heading --no-ignore --color=always "(type|enum|struct|trait)[ \t]+([a-zA-Z0-9_]+)" -g "*.rs" | rg '.shellescape(<q-args>), 1,
-			\   <bang>0 ? fzf#vim#with_preview('up:60%')
-			\           : fzf#vim#with_preview('right:50%:hidden', '?'),
-			\   <bang>0)
-command! -bang -nargs=* FindFunctions
-			\ call fzf#vim#grep(
-			\   'rg --column --line-number --no-heading --no-ignore --color=always "fn +([a-zA-Z0-9_]+)" -g "*.rs" | rg '.shellescape(<q-args>), 1,
-			\   <bang>0 ? fzf#vim#with_preview('up:60%')
-			\           : fzf#vim#with_preview('right:50%:hidden', '?'),
-			\   <bang>0)
-
-command! -bang -nargs=* FindImpls
-			\ call fzf#vim#grep(
-			\   'rg --column --line-number --no-heading ---no-ignore -color=always "impl([ \t\n]*<[^>]*>)?[ \t]+(([a-zA-Z0-9_:]+)[ \t]*(<[^>]*>)?[ \t]+(for)[ \t]+)?([a-zA-Z0-9_]+)" | rg '.shellescape(<q-args>), 1,
-			\   <bang>0 ? fzf#vim#with_preview('up:60%')
-			\           : fzf#vim#with_preview('right:50%:hidden', '?'),
-			\ <bang>0)
 
 " directory doesnt exist? Prompt to confirm one should be created
 augroup vimrc-auto-mkdir
@@ -307,3 +310,4 @@ function! g:MyNerdToggle()
 		:NERDTreeFind
 	endif
 endfunction
+

@@ -7,9 +7,5 @@
 !.config/nvim
 !.config/nvim/init.vim
 !scripts/
-!scripts/*
 !vimfiles/
-!vimfiles/*
-!vimfiles/ftpplugin/
-!vimfiles/ftpplugin/*
 !.latexmkrc
