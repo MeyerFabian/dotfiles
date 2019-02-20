@@ -59,17 +59,18 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Chiel92/vim-autoformat'
 Plug 'tikhomirov/vim-glsl'
-Plug 'chaoren/vim-wordmotion'
 Plug 'easymotion/vim-easymotion'
 Plug 'lervag/vimtex'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'wesQ3/vim-windowswap'
 Plug 'tpope/vim-abolish'
-Plug 'sukima/vim-tiddlywiki'
-Plug 'vimwiki/vimwiki'
+Plug 'MeyerFabian/vim-tiddlywiki'
+"Plug 'vimwiki/vimwiki'
+"Plug 'ohle/wikidpad.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+Plug 'kynan/dokuvimki', {'on': 'DokuVimKi'}
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/async.vim'
 "Plug 'prabirshrestha/vim-lsp'
@@ -146,6 +147,12 @@ let g:tex_fold_enabled = 0
 let g:tex_comment_nospell = 1
 
 let g:vimwiki_list = [{'path':'~/Projects/vimwiki', 'path_html':'~/Projects/vimwiki_html/', 'auto_tags':1}]
+
+let g:vim_markdown_no_extensions_in_markdown = 1
+let g:vim_markdown_follow_anchor = 1
+
+" dokuwiki credentials
+source ~/dokuwiki_auth.vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                 FONT + GUI                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -247,6 +254,10 @@ nnoremap <leader>wbb :VimwikiRebuildTags!<cr>
 nnoremap <leader>wbg :VimwikiGenerateTags<Space>
 nnoremap <leader>wbh :VimwikiAll2HTML<cr>
 
+"DokuVimKi
+nnoremap <leader>ww :DokuVimKi<cr>
+nnoremap <leader>we :let @"=substitute(split(expand("%:r"),"pages\\")[1],'\\',':','g')<CR>:DWedit <C-R>"<cr>
+nnoremap <leader>ws :DWsearch<Space>
 
 "easymotion
 " <Leader>f{char} to move to {char}
