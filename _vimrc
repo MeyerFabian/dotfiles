@@ -255,9 +255,9 @@ nnoremap <leader>wbg :VimwikiGenerateTags<Space>
 nnoremap <leader>wbh :VimwikiAll2HTML<cr>
 
 "DokuVimKi
-nnoremap <leader>ww :DokuVimKi<cr>
-nnoremap <leader>we :let @"=substitute(split(expand("%:r"),"pages\\")[1],'\\',':','g')<CR>:DWedit <C-R>"<cr>
-nnoremap <leader>ws :DWsearch<Space>
+nnoremap <leader>ww :DokuVimKi<cr><c-w>h<c-w>c
+nnoremap <leader>we :let @"=substitute(split(expand("%:r"),"pages\\")[1],'\\',':','g')<CR>:DWedit <C-R>"<cr><cr>
+nnoremap <leader>wn :let @"=join(split(expand("%:r"),":")[:-2],':')<CR>:DWedit <C-R>"
 
 "easymotion
 " <Leader>f{char} to move to {char}
