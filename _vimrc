@@ -105,7 +105,7 @@ let g:cpp_class_decl_highlight = 1
 let g:cpp_class_scope_highlight = 1
 "
 " turn off indent
-autocmd FileType vim,tex,wiki,md,txt let b:autoformat_autoindent=0
+autocmd FileType text,vim,tex,wiki,md let b:autoformat_autoindent=0
 "clang-format
 au BufWrite * :Autoformat
 "ulti snippets
