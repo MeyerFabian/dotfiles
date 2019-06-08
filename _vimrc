@@ -47,6 +47,8 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 call plug#begin('$Home/vimfiles/plugged')
+Plug 'jpalardy/vim-slime'
+Plug 'jvirtanen/vim-octave'
 Plug 'rust-lang/rust.vim', { 'for': [ 'rust' ], 'do': 'cargo install rustfmt' }
 Plug 'racer-rust/vim-racer'
 Plug 'jpo/vim-railscasts-theme'
@@ -96,6 +98,9 @@ call plug#end()
 "nn <silent> <leader>lr :LspReferences<cr>
 "nn <silent> <leader>lf :LspDocumentFormat<cr>
 "nn <f2> :LspRename<cr>
+
+"conemu+slime
+let g:slime_target = "conemu"
 
 "rustfmt
 "let g:rustfmt_autosave = 1
@@ -258,7 +263,6 @@ nnoremap <leader>wbh :VimwikiAll2HTML<cr>
 nnoremap <leader>ww :DokuVimKi<cr><c-w>h<c-w>c
 nnoremap <leader>we :let @"=substitute(split(expand("%:r"),"pages\\")[1],'\\',':','g')<CR>:DWedit <C-R>"<cr><cr>
 nnoremap <leader>wn :let @"=join(split(expand("%:r"),":")[:-2],':')<CR>:DWedit <C-R>"
-
 "easymotion
 " <Leader>f{char} to move to {char}
 map  f <Plug>(easymotion-bd-f)
@@ -320,5 +324,9 @@ function! g:MyNerdToggle()
 	else
 		:NERDTreeFind
 	endif
+endfunction
+
+"conemu
+function! s:ConemuSend()
 endfunction
 
