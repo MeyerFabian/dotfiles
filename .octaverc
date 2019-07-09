@@ -1,1 +1,2 @@
+gnuplot_binary 'D:\Software\gnuplot\gnuplot\bin\gnuplot.exe'
 graphics_toolkit('gnuplot');

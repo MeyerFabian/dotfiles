@@ -47,6 +47,7 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 call plug#begin('$Home/vimfiles/plugged')
+Plug 'MeyerFabian/dokuvimki', {'on': 'DokuVimKi'}
 Plug 'jpalardy/vim-slime'
 Plug 'jvirtanen/vim-octave'
 Plug 'rust-lang/rust.vim', { 'for': [ 'rust' ], 'do': 'cargo install rustfmt' }
@@ -67,12 +68,11 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'wesQ3/vim-windowswap'
 Plug 'tpope/vim-abolish'
-Plug 'MeyerFabian/vim-tiddlywiki'
+"Plug 'MeyerFabian/vim-tiddlywiki'
 "Plug 'vimwiki/vimwiki'
 "Plug 'ohle/wikidpad.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-Plug 'kynan/dokuvimki', {'on': 'DokuVimKi'}
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/async.vim'
 "Plug 'prabirshrestha/vim-lsp'
