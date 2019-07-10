@@ -46,6 +46,8 @@ endif
 "                                  PLUGINS                                   "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+
+
 call plug#begin('$Home/vimfiles/plugged')
 Plug 'MeyerFabian/dokuvimki', {'on': 'DokuVimKi'}
 Plug 'jpalardy/vim-slime'
@@ -58,7 +60,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Shougo/deol.nvim'
-Plug 'Valloric/YouCompleteMe'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Chiel92/vim-autoformat'
 Plug 'tikhomirov/vim-glsl'
@@ -68,11 +69,10 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'wesQ3/vim-windowswap'
 Plug 'tpope/vim-abolish'
-"Plug 'MeyerFabian/vim-tiddlywiki'
-"Plug 'vimwiki/vimwiki'
-"Plug 'ohle/wikidpad.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+Plug 'Valloric/YouCompleteMe'
+" Alternative to YouCompleteMe
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/async.vim'
 "Plug 'prabirshrestha/vim-lsp'
@@ -82,9 +82,12 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                             Initialize Plugins                             "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"let g:loaded_youcompleteme  = 1
+let active_vim_autoformat = 1
+let active_ulti_snippets = 1
+let active_vimtex = 1
 
-" Initialize plugin system
-"let g:loaded_youcompleteme = 1
+
 "if executable('cquery')
 "   au User lsp_setup call lsp#register_server({
 "   \ 'name': 'cquery',
@@ -111,47 +114,54 @@ let g:cpp_class_scope_highlight = 1
 "
 " turn off indent
 autocmd FileType text,vim,tex,wiki,md let b:autoformat_autoindent=0
+
+if active_vim_autoformat
 "clang-format
-au BufWrite * :Autoformat
-"ulti snippets
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsListSnippets="<c-e>"
-" this mapping Enter key to <C-y> to chose the current highlight item
-" and close the selection list, same as other IDEs.
-" CONFLICT with some plugins like tpope/Endwise
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-"tex
-let g:vimtex_view_general_method = 'SumatraPDF'
-let g:vimtex_view_general_viewer = 'SumatraPDF'
-let g:vimtex_view_general_options
-			\ = '-reuse-instance -forward-search @tex @line @pdf'
-let g:vimtex_view_general_options_latexmk = '-reuse-instance'
-let g:vimtex_compiler_latexmk = {
-			\ 'options' : [
-			\   '-pdf',
-			\   '-shell-escape',
-			\   '-verbose',
-			\   '-file-line-error',
-			\   '-synctex=1',
-			\   '-interaction=nonstopmode',
-			\ ],
-			\}
-
-if !exists('g:ycm_semantic_triggers')
-	let g:ycm_semantic_triggers = {}
+	au BufWrite * :Autoformat
 endif
-let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
-let g:ycm_filetype_blacklist = {}
 
-let g:tex_flavor = "latex"
-let g:tex_fast = "cmMprs"
-let g:tex_conceal = ""
-let g:tex_fold_enabled = 0
-let g:tex_comment_nospell = 1
+if active_ulti_snippets
+"ulti snippets
+	au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+	let g:UltiSnipsJumpForwardTrigger="<tab>"
+	let g:UltiSnipsListSnippets="<c-e>"
+	" this mapping Enter key to <C-y> to chose the current highlight item
+	" and close the selection list, same as other IDEs.
+	" CONFLICT with some plugins like tpope/Endwise
+	inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+if active_vimtex
+	"tex
+	let g:vimtex_view_general_method = 'SumatraPDF'
+	let g:vimtex_view_general_viewer = 'SumatraPDF'
+	let g:vimtex_view_general_options
+				\ = '-reuse-instance -forward-search @tex @line @pdf'
+	let g:vimtex_view_general_options_latexmk = '-reuse-instance'
+	let g:vimtex_compiler_latexmk = {
+				\ 'options' : [
+				\   '-pdf',
+				\   '-shell-escape',
+				\   '-verbose',
+				\   '-file-line-error',
+				\   '-synctex=1',
+				\   '-interaction=nonstopmode',
+				\ ],
+				\}
 
-let g:vimwiki_list = [{'path':'~/Projects/vimwiki', 'path_html':'~/Projects/vimwiki_html/', 'auto_tags':1}]
+	if !exists('g:ycm_semantic_triggers')
+		let g:ycm_semantic_triggers = {}
+	endif
+	let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
+	let g:ycm_filetype_blacklist = {}
+
+	let g:tex_flavor = "latex"
+	let g:tex_fast = "cmMprs"
+	let g:tex_conceal = ""
+	let g:tex_fold_enabled = 0
+	let g:tex_comment_nospell = 1
+endif
+
+"let g:vimwiki_list = [{'path':'~/Projects/vimwiki', 'path_html':'~/Projects/vimwiki_html/', 'auto_tags':1}]
 
 let g:vim_markdown_no_extensions_in_markdown = 1
 let g:vim_markdown_follow_anchor = 1
@@ -330,3 +340,7 @@ endfunction
 function! s:ConemuSend()
 endfunction
 
+function! PlugCond(cond, ...)
+  let opts = get(a:000, 0, {})
+  return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
+endfunction
