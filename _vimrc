@@ -70,7 +70,8 @@ Plug 'honza/vim-snippets'
 Plug 'wesQ3/vim-windowswap'
 Plug 'tpope/vim-abolish'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+Plug 'tpope/vim-markdown'
+Plug 'masukomi/vim-markdown-folding'
 Plug 'Valloric/YouCompleteMe'
 " Alternative to YouCompleteMe
 "Plug 'prabirshrestha/asyncomplete.vim'
@@ -86,7 +87,7 @@ call plug#end()
 let active_vim_autoformat = 1
 let active_ulti_snippets = 1
 let active_vimtex = 1
-
+let active_rust = 1
 
 "if executable('cquery')
 "   au User lsp_setup call lsp#register_server({
@@ -105,9 +106,6 @@ let active_vimtex = 1
 "conemu+slime
 let g:slime_target = "conemu"
 
-"rustfmt
-"let g:rustfmt_autosave = 1
-
 " syntax highligting c++
 let g:cpp_class_decl_highlight = 1
 let g:cpp_class_scope_highlight = 1
@@ -115,7 +113,7 @@ let g:cpp_class_scope_highlight = 1
 " turn off indent
 autocmd FileType text,vim,tex,wiki,md let b:autoformat_autoindent=0
 
-if active_vim_autoformat
+if active_vim_autoformat && !active_rust
 "clang-format
 	au BufWrite * :Autoformat
 endif
@@ -163,8 +161,6 @@ endif
 
 "let g:vimwiki_list = [{'path':'~/Projects/vimwiki', 'path_html':'~/Projects/vimwiki_html/', 'auto_tags':1}]
 
-let g:vim_markdown_no_extensions_in_markdown = 1
-let g:vim_markdown_follow_anchor = 1
 
 " dokuwiki credentials
 source ~/dokuwiki_auth.vim
@@ -253,6 +249,9 @@ nnoremap <leader>mm :so ~/vimfiles/sessions/
 
 "fzf
 nnoremap <leader>/p :Files<CR>
+nnoremap <leader>/f :FindFunctions<CR>
+nnoremap <leader>/s :FindSymbols<CR>
+nnoremap <leader>/i :FindImpls<CR>
 
 "git
 nnoremap <leader>gs :Gstatus<CR>
@@ -311,6 +310,35 @@ augroup vimrc-auto-mkdir
 	endfunction
 augroup END
 
+if active_rust
+  command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+    \   <bang>0)
+
+  command! -bang -nargs=* FindSymbols
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always "(type|enum|struct|trait)[ \t]+([a-zA-Z0-9_]+)" -g "*.rs" -S | rg -S '.shellescape(<q-args>), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+    \   <bang>0)
+
+  command! -bang -nargs=* FindFunctions
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always "fn +([a-zA-Z0-9_]+)" -g "*.rs" | rg -g "*.rs" -S '.substitute(shellescape(<q-args>), " ", "|rg -g '*.rs' -S", ""), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:40%')
+    \           : fzf#vim#with_preview('right:20%:hidden', '?'),
+    \   <bang>0)
+
+  command! -bang -nargs=* FindImpls
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always "impl([ \t\n]*<[^>]*>)?[ \t]+(([a-zA-Z0-9_:]+)[ \t]*(<[^>]*>)?[ \t]+(for)[ \t]+)?([a-zA-Z0-9_]+)" | rg -S '.substitute(shellescape(<q-args>), " ", "|rg ", ""), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+    \   <bang>0)
+endif
 
 function! g:UltiSnips_Complete()
 	call UltiSnips#ExpandSnippet()
