@@ -87,7 +87,7 @@ call plug#end()
 let active_vim_autoformat = 1
 let active_ulti_snippets = 1
 let active_vimtex = 1
-let active_rust = 1
+let active_rust = 0
 
 "if executable('cquery')
 "   au User lsp_setup call lsp#register_server({
@@ -195,7 +195,7 @@ set clipboard=unnamed
 "                                KEYMAPPINGS                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader = "\<Space>"
-nnoremap gd :YcmCompleter GoToDeclaration<CR>
+nnoremap gd :YcmCompleter GoTo<CR>
 let g:windowswap_map_keys = 0 "prevent default bindings
 
 let g:NERDTreeQuitOnOpen=1
@@ -216,7 +216,7 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 "tabs
-nnoremap <leader>te :tabnew<CR>
+nnoremap <leader>te :tabnew %<CR>
 nnoremap <leader>tn :tabn<CR>
 nnoremap <leader>tp :tabp<CR>
 nnoremap <leader>tL :tabm+<CR>
@@ -248,6 +248,7 @@ nnoremap <leader>mm :so ~/vimfiles/sessions/
 "nnoremap <leader>p :CtrlP ~/Projects<CR>
 
 "fzf
+nnoremap <leader>// :Rg<CR>
 nnoremap <leader>/p :Files<CR>
 nnoremap <leader>/f :FindFunctions<CR>
 nnoremap <leader>/s :FindSymbols<CR>
@@ -269,7 +270,7 @@ nnoremap <leader>wbg :VimwikiGenerateTags<Space>
 nnoremap <leader>wbh :VimwikiAll2HTML<cr>
 
 "DokuVimKi
-nnoremap <leader>ww :DokuVimKi<cr><c-w>h<c-w>c
+nnoremap <leader>ww :DokuVimKi<cr><c-w>h<c-w>
 nnoremap <leader>we :let @"=substitute(split(expand("%:r"),"pages\\")[1],'\\',':','g')<CR>:DWedit <C-R>"<cr><cr>
 nnoremap <leader>wn :let @"=join(split(expand("%:r"),":")[:-2],':')<CR>:DWedit <C-R>"
 "easymotion
@@ -310,14 +311,15 @@ augroup vimrc-auto-mkdir
 	endfunction
 augroup END
 
-if active_rust
-  command! -bang -nargs=* Rg
-    \ call fzf#vim#grep(
-    \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
-    \   <bang>0 ? fzf#vim#with_preview('up:60%')
-    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-    \   <bang>0)
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
 
+if active_rust
+"Rust
   command! -bang -nargs=* FindSymbols
     \ call fzf#vim#grep(
     \   'rg --column --line-number --no-heading --color=always "(type|enum|struct|trait)[ \t]+([a-zA-Z0-9_]+)" -g "*.rs" -S | rg -S '.shellescape(<q-args>), 1,
@@ -338,6 +340,24 @@ if active_rust
     \   <bang>0 ? fzf#vim#with_preview('up:60%')
     \           : fzf#vim#with_preview('right:50%:hidden', '?'),
     \   <bang>0)
+else
+"C(++)
+  command! -bang -nargs=* FindSymbols
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always "(typedef|using|enum|class|struct)[ \t]+([a-zA-Z0-9_]+)" -g "*.{hpp,h,cpp,c}" -S | rg -S '.shellescape(<q-args>), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+    \   <bang>0)
+
+  command! -bang -nargs=* FindFunctions
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always "^((::[[:space:]]*)?[A-Za-z_].*)$" -g "*.{hpp,h,cpp,c}" | rg -g "*.rs" -S '
+    \.substitute(shellescape(<q-args>), " ", "|rg -g '*.rs' -S", ""), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:40%')
+    \           : fzf#vim#with_preview('right:20%:hidden', '?'),
+    \   <bang>0)
+
+
 endif
 
 function! g:UltiSnips_Complete()
