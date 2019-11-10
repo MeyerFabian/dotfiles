@@ -111,7 +111,11 @@ let g:cpp_class_decl_highlight = 1
 let g:cpp_class_scope_highlight = 1
 "
 " turn off indent
-autocmd FileType text,vim,tex,wiki,md let b:autoformat_autoindent=0
+autocmd FileType text,vim,tex,wiki,markdown let b:autoformat_autoindent=0
+
+"spell checks
+autocmd BufEnter *.txt  set nospell
+autocmd BufLeave *.txt  set spell
 
 if active_vim_autoformat && !active_rust
 "clang-format
@@ -208,6 +212,12 @@ vnoremap <leader>d d
 nnoremap d "_d
 nnoremap D "_D
 vnoremap d "_d
+
+"rebind shift-up/down not to do page up/down
+nmap <S-Up> <Up>
+nmap <S-Down> <Down>
+nmap <S-CR> <CR>
+
 "move line down up
 nnoremap <A-j> :m .+1<CR>==
 nnoremap <A-k> :m .-2<CR>==
@@ -270,7 +280,7 @@ nnoremap <leader>wbg :VimwikiGenerateTags<Space>
 nnoremap <leader>wbh :VimwikiAll2HTML<cr>
 
 "DokuVimKi
-nnoremap <leader>ww :DokuVimKi<cr><c-w>h<c-w>
+nnoremap <leader>ww :DokuVimKi<cr><c-w>h<c-w>c
 nnoremap <leader>we :let @"=substitute(split(expand("%:r"),"pages\\")[1],'\\',':','g')<CR>:DWedit <C-R>"<cr><cr>
 nnoremap <leader>wn :let @"=join(split(expand("%:r"),":")[:-2],':')<CR>:DWedit <C-R>"
 "easymotion
@@ -278,16 +288,9 @@ nnoremap <leader>wn :let @"=join(split(expand("%:r"),":")[:-2],':')<CR>:DWedit <
 map  f <Plug>(easymotion-bd-f)
 nmap f <Plug>(easymotion-overwin-f)
 
-" s{char}{char} to move to {char}{char}
-nmap s <Plug>(easymotion-overwin-f2)
-
 " Move to line
 map L <Plug>(easymotion-bd-jk)
 nmap L <Plug>(easymotion-overwin-line)
-
-" Move to word
-map  w <Plug>(easymotion-bd-w)
-nmap w <Plug>(easymotion-overwin-w)
 
 "swap windows
 nnoremap <silent> <C-w>w :call WindowSwap#EasyWindowSwap()<CR>
