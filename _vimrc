@@ -46,7 +46,11 @@ endif
 "                                  PLUGINS                                   "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
+if empty(glob('~/vimfiles/autoload/plug.vim'))
+  silent !curl -fLo ~/vimfiles/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
 call plug#begin('$Home/vimfiles/plugged')
 Plug 'MeyerFabian/dokuvimki', {'on': 'DokuVimKi'}
@@ -54,7 +58,7 @@ Plug 'jpalardy/vim-slime'
 Plug 'jvirtanen/vim-octave'
 Plug 'rust-lang/rust.vim', { 'for': [ 'rust' ], 'do': 'cargo install rustfmt' }
 Plug 'racer-rust/vim-racer'
-Plug 'jpo/vim-railscasts-theme'
+Plug 'MeyerFabian/vim-railscasts-theme'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -78,6 +82,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'vim-airline/vim-airline'
 Plug 'scrooloose/nerdcommenter'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'godlygeek/tabular'
 " Alternative to YouCompleteMe
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/async.vim'
@@ -89,11 +94,11 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                             Initialize Plugins                             "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"let g:loaded_youcompleteme  = 1
-let active_vim_autoformat = 1
-let active_ulti_snippets = 1
-let active_vimtex = 1
-let active_rust = 0
+"let g:loaded_youcompleteme = 1
+let active_vim_autoformat   = 1
+let active_ulti_snippets    = 1
+let active_vimtex           = 1
+let active_rust             = 0
 
 "if executable('cquery')
 "   au User lsp_setup call lsp#register_server({
@@ -110,13 +115,13 @@ let active_rust = 0
 "nn <f2> :LspRename<cr>
 
 "folding
-set foldmethod=syntax
+set foldmethod=indent
 
 "conemu+slime
 let g:slime_target = "conemu"
 
 " syntax highligting c++
-let g:cpp_class_decl_highlight = 1
+let g:cpp_class_decl_highlight  = 1
 let g:cpp_class_scope_highlight = 1
 "
 " turn off indent
@@ -180,8 +185,8 @@ source ~/dokuwiki_auth.vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                 FONT + GUI                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 colorscheme railscasts
+
 set guifont=DejaVu\ Sans\ Mono:h10
 set number
 set t_Co=256
@@ -203,6 +208,8 @@ set wildmode=list,full
 "set clipboard windows
 set clipboard=unnamed
 
+set scrolloff=1
+set smarttab
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                KEYMAPPINGS                                 "
@@ -388,9 +395,6 @@ function! g:MyNerdToggle()
 	endif
 endfunction
 
-"conemu
-function! s:ConemuSend()
-endfunction
 
 function! PlugCond(cond, ...)
   let opts = get(a:000, 0, {})
