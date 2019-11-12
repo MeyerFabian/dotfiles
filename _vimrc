@@ -73,11 +73,17 @@ Plug 'godlygeek/tabular'
 Plug 'tpope/vim-markdown'
 Plug 'masukomi/vim-markdown-folding'
 Plug 'Valloric/YouCompleteMe'
+Plug 'Konfekt/FastFold'
+Plug 'jiangmiao/auto-pairs'
+Plug 'vim-airline/vim-airline'
+Plug 'scrooloose/nerdcommenter'
+Plug 'terryma/vim-multiple-cursors'
 " Alternative to YouCompleteMe
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/async.vim'
 "Plug 'prabirshrestha/vim-lsp'
 "Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" try coc maybe
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -102,6 +108,9 @@ let active_rust = 0
 "nn <silent> <leader>lr :LspReferences<cr>
 "nn <silent> <leader>lf :LspDocumentFormat<cr>
 "nn <f2> :LspRename<cr>
+
+"folding
+set foldmethod=syntax
 
 "conemu+slime
 let g:slime_target = "conemu"
@@ -162,7 +171,7 @@ if active_vimtex
 	let g:tex_fold_enabled = 0
 	let g:tex_comment_nospell = 1
 endif
-
+"
 "let g:vimwiki_list = [{'path':'~/Projects/vimwiki', 'path_html':'~/Projects/vimwiki_html/', 'auto_tags':1}]
 
 
@@ -231,14 +240,6 @@ nnoremap <leader>tn :tabn<CR>
 nnoremap <leader>tp :tabp<CR>
 nnoremap <leader>tL :tabm+<CR>
 nnoremap <leader>tH :tabm-<CR>
-"autoclose"
-inoremap " "<left>
-inoremap ' '<left>
-inoremap ( ()<left>
-inoremap [ []<left>
-inoremap { {}<left>
-inoremap {<CR> {<CR>}<ESC>O
-inoremap {;<CR> {<CR>};<ESC>O
 "vimrc open
 nnoremap <leader>ed :e ~/_vimrc<CR>
 nnoremap <leader>es :w<CR>
