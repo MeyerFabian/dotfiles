@@ -41,7 +41,7 @@ if !has('nvim')
 		endif
 	endfunction
 endif
-
+"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                  PLUGINS                                   "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -291,7 +291,7 @@ nnoremap <leader>wbg :VimwikiGenerateTags<Space>
 nnoremap <leader>wbh :VimwikiAll2HTML<cr>
 
 "DokuVimKi
-nnoremap <leader>ww :DokuVimKi<cr><c-w>h<c-w>c
+nnoremap <leader>ww :DokuVimKi<cr><c-w>c
 nnoremap <leader>we :let @"=substitute(split(expand("%:r"),"pages\\")[1],'\\',':','g')<CR>:DWedit <C-R>"<cr><cr>
 nnoremap <leader>wn :let @"=join(split(expand("%:r"),":")[:-2],':')<CR>:DWedit <C-R>"
 "easymotion
