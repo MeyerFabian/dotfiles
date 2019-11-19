@@ -46,17 +46,11 @@ endif
 "                                  PLUGINS                                   "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-if empty(glob('~/vimfiles/autoload/plug.vim'))
-  silent !curl -fLo ~/vimfiles/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
 call plug#begin('$Home/vimfiles/plugged')
 Plug 'MeyerFabian/dokuvimki', {'on': 'DokuVimKi'}
 Plug 'jpalardy/vim-slime'
 Plug 'jvirtanen/vim-octave'
-Plug 'rust-lang/rust.vim', { 'for': [ 'rust' ], 'do': 'cargo install rustfmt' }
+"Plug 'rust-lang/rust.vim', { 'for': [ 'rust' ], 'do': 'cargo install rustfmt' }
 Plug 'racer-rust/vim-racer'
 Plug 'MeyerFabian/vim-railscasts-theme'
 Plug 'tpope/vim-fugitive'
@@ -69,8 +63,8 @@ Plug 'Chiel92/vim-autoformat'
 Plug 'tikhomirov/vim-glsl'
 Plug 'easymotion/vim-easymotion'
 Plug 'lervag/vimtex'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+"Plug 'SirVer/ultisnips'
+"Plug 'honza/vim-snippets'
 Plug 'wesQ3/vim-windowswap'
 Plug 'tpope/vim-abolish'
 Plug 'godlygeek/tabular'
@@ -96,7 +90,7 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "let g:loaded_youcompleteme = 1
 let active_vim_autoformat   = 1
-let active_ulti_snippets    = 1
+let active_ulti_snippets    = 0
 let active_vimtex           = 1
 let active_rust             = 0
 
@@ -187,7 +181,6 @@ source ~/dokuwiki_auth.vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 colorscheme railscasts
 
-set guifont=DejaVu\ Sans\ Mono:h10
 set number
 set t_Co=256
 set nocompatible
