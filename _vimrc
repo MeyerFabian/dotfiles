@@ -51,11 +51,11 @@ Plug 'MeyerFabian/dokuvimki', {'on': 'DokuVimKi'}
 Plug 'jpalardy/vim-slime'
 Plug 'jvirtanen/vim-octave'
 "Plug 'rust-lang/rust.vim', { 'for': [ 'rust' ], 'do': 'cargo install rustfmt' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'racer-rust/vim-racer'
 Plug 'MeyerFabian/vim-railscasts-theme'
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Shougo/deol.nvim'
 Plug 'octol/vim-cpp-enhanced-highlight'
@@ -76,7 +76,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'vim-airline/vim-airline'
 Plug 'scrooloose/nerdcommenter'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'godlygeek/tabular'
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Alternative to YouCompleteMe
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/async.vim'
@@ -88,7 +88,12 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                             Initialize Plugins                             "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ycm_max_diagnostics_to_display = 0
+let active_coc = 0
+
+let active_ycm =1
 "let g:loaded_youcompleteme = 1
+
 let active_vim_autoformat   = 1
 let active_ulti_snippets    = 0
 let active_vimtex           = 1
@@ -109,7 +114,7 @@ let active_rust             = 0
 "nn <f2> :LspRename<cr>
 
 "folding
-set foldmethod=indent
+set foldmethod=syntax
 
 "conemu+slime
 let g:slime_target = "conemu"
@@ -127,7 +132,7 @@ autocmd BufLeave *.txt  set spell
 
 if active_vim_autoformat && !active_rust
 "clang-format
-	au BufWrite * :Autoformat
+	"au BufWrite * :Autoformat
 endif
 
 if active_ulti_snippets
@@ -176,7 +181,11 @@ endif
 
 " dokuwiki credentials
 source ~/dokuwiki_auth.vim
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" airline
+let g:airline#extensions#tabline#enabled = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                 FONT + GUI                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 colorscheme railscasts
@@ -207,11 +216,19 @@ set clipboard=unnamed
 set scrolloff=1
 set smarttab
 
+au VimEnter * GuiPopupmenu 0
+au VimEnter * GuiTabline 0
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                KEYMAPPINGS                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader = "\<Space>"
-nnoremap gd :YcmCompleter GoTo<CR>
+if active_ycm
+  nnoremap gd :YcmCompleter GoTo<CR>
+endif
+if active_coc
+  nmap <silent> gd <Plug>(coc-definition)
+endif
+
 let g:windowswap_map_keys = 0 "prevent default bindings
 
 let g:NERDTreeQuitOnOpen=1
