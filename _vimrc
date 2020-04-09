@@ -1,4 +1,4 @@
-" DOWNLOAD, PUT IN	vimfiles/autoload	https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" DOWNLOAD, PUT IN  vimfiles/autoload   https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 " SEPERATE WINDOWS BINARIES FOR FZF at https://github.com/junegunn/fzf-bin/releases
 
 set encoding=utf-8
@@ -7,39 +7,39 @@ set encoding=utf-8
 "                              GVIM ON WINDOWS                               "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if !has('nvim')
-	source $VIMRUNTIME/vimrc_example.vim
-	source $VIMRUNTIME/mswin.vim
-	behave mswin
+    source $VIMRUNTIME/vimrc_example.vim
+    source $VIMRUNTIME/mswin.vim
+    behave mswin
 
-	set diffexpr=MyDiff()
-	function MyDiff()
-		let opt = '-a --binary '
-		if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-		if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-		let arg1 = v:fname_in
-		if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-		let arg2 = v:fname_new
-		if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-		let arg3 = v:fname_out
-		if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-		if $VIMRUNTIME =~ ' '
-			if &sh =~ '\<cmd'
-				if empty(&shellxquote)
-					let l:shxq_sav = ''
-					set shellxquote&
-				endif
-				let cmd = '"' . $VIMRUNTIME . '\diff"'
-			else
-				let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-			endif
-		else
-			let cmd = $VIMRUNTIME . '\diff'
-		endif
-		silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
-		if exists('l:shxq_sav')
-			let &shellxquote=l:shxq_sav
-		endif
-	endfunction
+    set diffexpr=MyDiff()
+    function MyDiff()
+        let opt = '-a --binary '
+        if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+        if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+        let arg1 = v:fname_in
+        if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+        let arg2 = v:fname_new
+        if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+        let arg3 = v:fname_out
+        if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+        if $VIMRUNTIME =~ ' '
+            if &sh =~ '\<cmd'
+                if empty(&shellxquote)
+                    let l:shxq_sav = ''
+                    set shellxquote&
+                endif
+                let cmd = '"' . $VIMRUNTIME . '\diff"'
+            else
+                let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+            endif
+        else
+            let cmd = $VIMRUNTIME . '\diff'
+        endif
+        silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+        if exists('l:shxq_sav')
+            let &shellxquote=l:shxq_sav
+        endif
+    endfunction
 endif
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -90,7 +90,7 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ycm_max_diagnostics_to_display = 0
 let active_coc = 0
-
+let g:autoformat_verbosemode=1
 let active_ycm =1
 "let g:loaded_youcompleteme = 1
 
@@ -127,53 +127,66 @@ let g:cpp_class_scope_highlight = 1
 autocmd FileType text,vim,tex,wiki,markdown let b:autoformat_autoindent=0
 
 "spell checks
-autocmd BufEnter *.txt  set nospell
-autocmd BufLeave *.txt  set spell
+autocmd BufEnter *.txt  setlocal nospell
+autocmd BufLeave *.txt  setlocal spell
+
+augroup spellCheck
+    autocmd!
+    autocmd FileType *.rst setlocal spell
+    autocmd BufRead,BufNewFile *.rst setlocal spell
+augroup END
+
 
 if active_vim_autoformat && !active_rust
 "clang-format
-	"au BufWrite * :Autoformat
+au Bufwrite cpp :call AutoformatInCurrentDir()
+fun AutoformatInCurrentDir()
+    let dir = getcwd()
+    lcd %:p:h
+    Autoformat
+    execute "lcd" dir
+endfun
 endif
 
 if active_ulti_snippets
 "ulti snippets
-	au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-	let g:UltiSnipsJumpForwardTrigger="<tab>"
-	let g:UltiSnipsListSnippets="<c-e>"
-	" this mapping Enter key to <C-y> to chose the current highlight item
-	" and close the selection list, same as other IDEs.
-	" CONFLICT with some plugins like tpope/Endwise
-	inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+    let g:UltiSnipsJumpForwardTrigger="<tab>"
+    let g:UltiSnipsListSnippets="<c-e>"
+    " this mapping Enter key to <C-y> to chose the current highlight item
+    " and close the selection list, same as other IDEs.
+    " CONFLICT with some plugins like tpope/Endwise
+    inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 if active_vimtex
-	"tex
-	let g:vimtex_view_general_method = 'SumatraPDF'
-	let g:vimtex_view_general_viewer = 'SumatraPDF'
-	let g:vimtex_view_general_options
-				\ = '-reuse-instance -forward-search @tex @line @pdf'
-	let g:vimtex_view_general_options_latexmk = '-reuse-instance'
-	let g:vimtex_compiler_latexmk = {
-				\ 'options' : [
-				\   '-pdf',
-				\   '-shell-escape',
-				\   '-verbose',
-				\   '-file-line-error',
-				\   '-synctex=1',
-				\   '-interaction=nonstopmode',
-				\ ],
-				\}
+    "tex
+    let g:vimtex_view_general_method = 'SumatraPDF'
+    let g:vimtex_view_general_viewer = 'SumatraPDF'
+    let g:vimtex_view_general_options
+                \ = '-reuse-instance -forward-search @tex @line @pdf'
+    let g:vimtex_view_general_options_latexmk = '-reuse-instance'
+    let g:vimtex_compiler_latexmk = {
+                \ 'options' : [
+                \   '-pdf',
+                \   '-shell-escape',
+                \   '-verbose',
+                \   '-file-line-error',
+                \   '-synctex=1',
+                \   '-interaction=nonstopmode',
+                \ ],
+                \}
 
-	if !exists('g:ycm_semantic_triggers')
-		let g:ycm_semantic_triggers = {}
-	endif
-	let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
-	let g:ycm_filetype_blacklist = {}
+    if !exists('g:ycm_semantic_triggers')
+        let g:ycm_semantic_triggers = {}
+    endif
+    let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
+    let g:ycm_filetype_blacklist = {}
 
-	let g:tex_flavor = "latex"
-	let g:tex_fast = "cmMprs"
-	let g:tex_conceal = ""
-	let g:tex_fold_enabled = 0
-	let g:tex_comment_nospell = 1
+    let g:tex_flavor = "latex"
+    let g:tex_fast = "cmMprs"
+    let g:tex_conceal = ""
+    let g:tex_fold_enabled = 0
+    let g:tex_comment_nospell = 1
 endif
 "
 "let g:vimwiki_list = [{'path':'~/Projects/vimwiki', 'path_html':'~/Projects/vimwiki_html/', 'auto_tags':1}]
@@ -214,7 +227,8 @@ set wildmode=list,full
 set clipboard=unnamed
 
 set scrolloff=1
-set smarttab
+set ts=4 sw=4 sts=4 et
+
 
 au VimEnter * GuiPopupmenu 0
 au VimEnter * GuiTabline 0
@@ -324,15 +338,15 @@ nmap <leader>s :%Subvert/
 
 " directory doesnt exist? Prompt to confirm one should be created
 augroup vimrc-auto-mkdir
-	autocmd!
-	autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
-	function! s:auto_mkdir(dir, force)
-		if !isdirectory(a:dir)
-					\   && (a:force
-					\       || input("'" . a:dir . "' does not exist. Create? [y/N]") =~? '^y\%[es]$')
-			call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
-		endif
-	endfunction
+    autocmd!
+    autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
+    function! s:auto_mkdir(dir, force)
+        if !isdirectory(a:dir)
+                    \   && (a:force
+                    \       || input("'" . a:dir . "' does not exist. Create? [y/N]") =~? '^y\%[es]$')
+            call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
+        endif
+    endfunction
 augroup END
 
 command! -bang -nargs=* Rg
@@ -385,27 +399,27 @@ else
 endif
 
 function! g:UltiSnips_Complete()
-	call UltiSnips#ExpandSnippet()
-	if g:ulti_expand_res == 0
-		if pumvisible()
-			return "\<C-n>"
-		else
-			call UltiSnips#JumpForwards()
-			if g:ulti_jump_forwards_res == 0
-				return "\<TAB>"
-			endif
-		endif
-	endif
-	return ""
+    call UltiSnips#ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+            return "\<C-n>"
+        else
+            call UltiSnips#JumpForwards()
+            if g:ulti_jump_forwards_res == 0
+                return "\<TAB>"
+            endif
+        endif
+    endif
+    return ""
 endfunction
 
 
 function! g:MyNerdToggle()
-	if &filetype == 'nerdtree'
-		:NERDTreeToggle
-	else
-		:NERDTreeFind
-	endif
+    if &filetype == 'nerdtree'
+        :NERDTreeToggle
+    else
+        :NERDTreeFind
+    endif
 endfunction
 
 
