@@ -72,7 +72,7 @@ Plug 'tpope/vim-markdown'
 Plug 'masukomi/vim-markdown-folding'
 Plug 'Valloric/YouCompleteMe'
 Plug 'Konfekt/FastFold'
-Plug 'jiangmiao/auto-pairs'
+"Plug 'jiangmiao/auto-pairs'
 Plug 'vim-airline/vim-airline'
 Plug 'scrooloose/nerdcommenter'
 Plug 'terryma/vim-multiple-cursors'
@@ -92,6 +92,7 @@ let g:ycm_max_diagnostics_to_display = 0
 let active_coc = 0
 let g:autoformat_verbosemode=1
 let active_ycm =1
+let g:ycm_use_clangd = 0
 "let g:loaded_youcompleteme = 1
 
 let active_vim_autoformat   = 1
@@ -122,9 +123,10 @@ let g:slime_target = "conemu"
 " syntax highligting c++
 let g:cpp_class_decl_highlight  = 1
 let g:cpp_class_scope_highlight = 1
-"
-" turn off indent
-autocmd FileType text,vim,tex,wiki,markdown let b:autoformat_autoindent=0
+
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+let g:autoformat_remove_trailing_spaces = 0
 
 "spell checks
 autocmd BufEnter *.txt  setlocal nospell
@@ -139,15 +141,11 @@ augroup END
 
 if active_vim_autoformat && !active_rust
 "clang-format
-au Bufwrite cpp :call AutoformatInCurrentDir()
-fun AutoformatInCurrentDir()
-    let dir = getcwd()
-    lcd %:p:h
-    Autoformat
-    execute "lcd" dir
-endfun
+augroup autoformat
+    autocmd!
+    autocmd Bufwrite * silent! :Autoformat
+augroup END
 endif
-
 if active_ulti_snippets
 "ulti snippets
     au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
@@ -222,6 +220,8 @@ autocmd VimResized * wincmd =
 
 set wildmenu
 set wildmode=list,full
+
+set guifont=Consolas:h10:cANSI
 
 "set clipboard windows
 set clipboard=unnamed
@@ -308,6 +308,7 @@ nnoremap <leader>gd :Gdiff<CR>
 
 "shell
 nnoremap <leader>! :Deol -split<cr>
+tnoremap <ESC>   <C-\><C-n>
 
 "vimwiki
 nnoremap <leader>wbb :VimwikiRebuildTags!<cr>
