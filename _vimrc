@@ -84,7 +84,6 @@ Plug 'terryma/vim-multiple-cursors'
 "Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " try coc maybe
 call plug#end()
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                             Initialize Plugins                             "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -229,9 +228,9 @@ set clipboard=unnamed
 set scrolloff=1
 set ts=4 sw=4 sts=4 et
 
+call rpcnotify(1, 'Gui', 'Option', 'Popupmenu', 0)
+call rpcnotify(1, 'Gui', 'Option', 'Tabline', 0)
 
-au VimEnter * GuiPopupmenu 0
-au VimEnter * GuiTabline 0
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                KEYMAPPINGS                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -427,3 +426,4 @@ function! PlugCond(cond, ...)
   let opts = get(a:000, 0, {})
   return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
 endfunction
+
